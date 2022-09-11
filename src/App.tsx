@@ -13,14 +13,26 @@ function App() {
   const border = useRef();
   const [content, setcontent] = useState([
     {
-      InPort: 0,
+      InPort: false,
       Message: "Hello there 👋",
       OutputPort: ["next"],
       position: [10, 10],
-      id:0
+      connection: [1],
+      id: 0,
+    },
+    {
+      Inport: true,
+      Message: "hi",
+      Name: "Message",
+      OutputPort: ["next"],
+      connection: [],
+      exist: true,
+      id: 1,
+      opacity: 1,
+      pose: "absolute",
+      position: [529, 172],
     },
   ]);
-  console.log(border);
   return (
     <>
       <BackGround>
@@ -39,7 +51,14 @@ function App() {
         </ItemList>
         <Canvas content={content} border={border}>
           {content.map((itm: any, idx: number) => {
-            return <Functions key={idx} {...itm} setcards={setcontent} border={border}/>;
+            return (
+              <Functions
+                key={idx}
+                {...itm}
+                setcards={setcontent}
+                border={border}
+              />
+            );
           })}
         </Canvas>
       </BackGround>
