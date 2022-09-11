@@ -56,7 +56,7 @@ const Items: ItemsProps[] = [
     bgColor: "",
     schema: {
       position: defaultPosition,
-      OutputPort: ["next"],
+      OutputPort: ["true","false"],
       Inport: 1,
       connection: [],
       opacity: defaultOpacity,

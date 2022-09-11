@@ -1,11 +1,8 @@
 import classNames from "classnames";
 import React, { useState } from "react";
 
-
-
-
-const ItemList:React.FC<any> = ({border,children}) => {
-  const [Open, setOpen] = useState<boolean>(true);
+const ItemList: React.FC<any> = ({ border, children }) => {
+  const [Open, setOpen] = useState<boolean>(false);
   const ItemListCls = classNames(
     "overflow-auto",
     "md:w-[300px]",
@@ -13,7 +10,8 @@ const ItemList:React.FC<any> = ({border,children}) => {
     "bg-slate-200",
     "fixed",
     "w-full",
-    "h-[12vh]"
+    "h-[12vh]",
+    { "translate-x-[-90%]": Open },'duration-300'
   );
 
   const CloseButton = classNames(
@@ -38,9 +36,7 @@ const ItemList:React.FC<any> = ({border,children}) => {
       </div>
       <h1 className="md:block	hidden">Blocks</h1>
       <span className="md:block	hidden">Drag a Block to the right:</span>
-      <div className={itemsCls}>
-        {children}
-      </div>
+      <div className={itemsCls}>{children}</div>
     </div>
   );
 };

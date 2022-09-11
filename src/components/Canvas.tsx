@@ -1,7 +1,6 @@
 import React  from "react";
-import Functions from "./Functions";
 
-const Canvas:React.FC<any> = ({content,border}) => {
+const Canvas:React.FC<any> = ({border,children}) => {
   
   return (
     <div
@@ -16,9 +15,7 @@ const Canvas:React.FC<any> = ({content,border}) => {
         height: "200000px",
       }}
     >
-      {content.map((itm:any,idx:number)=>{
-        return <Functions key={idx}  {...itm}/>
-      })}
+      {children}
     </div>
   );
 };

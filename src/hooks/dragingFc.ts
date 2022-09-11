@@ -59,6 +59,7 @@ const dragEnd = async (
             auxCard.position[0] - border.current.offsetLeft,
             auxCard.position[1] - border.current.offsetTop,
           ],
+          id: old.length,
         },
       ];
     });
@@ -67,5 +68,15 @@ const dragEnd = async (
     return { ...last, exist: false, opacity: 0.3 };
   });
 };
-
-export { dragEnd, dragStart, dragOn };
+const dragingExisting = (e: React.DragEvent<HTMLElement>, id: any, setcards: any,border:any,elem:any) => {
+  setcards((old: any) => {
+    console.log(e);
+    return old.map((word: any) => {
+      if (word.id === id) {
+        return { ...word, position: [e.pageX -border.current.offsetLeft -(elem.current.offsetWidth/2) , e.pageY-border.current.offsetTop - (elem.current.offsetHeight/2)] };
+      }
+      return word;
+    });
+  });
+};
+export { dragEnd, dragStart, dragOn, dragingExisting };
