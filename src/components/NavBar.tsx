@@ -1,29 +1,27 @@
-import classNames from "classnames";
+import { Box } from "@mui/material";
 import React from "react";
-import '../App.css'
+import "../App.css";
+import { httpSubmitContent } from "../hooks/requests";
 
-type NavProps={
-    Name:string
-    CompanyName : string
-}
+type NavProps = {
+  Name: string;
+  CompanyName: string;
+  content?: any;
+};
 
-
-const NavBar:React.FC<NavProps> = ({Name,CompanyName}) => {
-  const navCLs = classNames('h-[10vh]','bg-slate-50','border-b','border-gray-800','border-solid','flex','items-center','px-20','justify-between','w-screen','fixed','top-0');
-  const Left = classNames();
-  const Right = classNames();
+const NavBar: React.FC<NavProps> = ({ Name, CompanyName, content }) => {
   return (
-    <nav className={navCLs}>
-      <div className={Left}>
+    <Box sx={{display:"flex",backgroundColor:'#fff'}}>
+      <div>
         <h1>{Name}</h1>
         <span>By {CompanyName}</span>
       </div>
-      <div className={Right}>
-            <button>☀️</button>
-            <button>Save 💾</button>
-            <button>Publish 🚀</button>
+      <div>
+        <button>☀️</button>
+        <button onClick={() => httpSubmitContent(content)}>Save 💾</button>
+        <button>Publish 🚀</button>
       </div>
-    </nav>
+    </Box>
   );
 };
 

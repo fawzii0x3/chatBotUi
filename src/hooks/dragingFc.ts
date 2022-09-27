@@ -30,6 +30,7 @@ const dragOn = (
     opacity = 1;
   }
   if (e.pageY && e.pageX) {
+    console.log(e.pageY,e.screenY)
     setauxCard((last: any) => {
       return { ...last, position: [e.pageX, e.pageY], opacity: opacity };
     });
@@ -48,7 +49,7 @@ const dragEnd = async (
     e.pageX > border.current.offsetLeft &&
     e.pageX < border.current.offsetLeft + border.current.clientWidth
   ) {
-    console.log(auxCard);
+    // console.log(auxCard,e);
     setcards((old: any) => {
       return [
         ...old,

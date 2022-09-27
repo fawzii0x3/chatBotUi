@@ -2,7 +2,7 @@ type Props = {
   children?: React.ReactChild | React.ReactChild[];
 };
 type ItemsProps={
-  Logo: IconDefinition,
+  Logo: any,
   Name: string,
   Description: string,
   OutPort: number,

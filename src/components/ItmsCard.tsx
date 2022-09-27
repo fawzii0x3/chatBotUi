@@ -1,9 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
 import React, { useState } from "react";
 import { ItemsProps } from "../gloabal";
 import Functions from "./Functions";
-import {dragEnd,dragStart,dragOn} from '../hooks/dragingFc'
+import { dragEnd, dragStart, dragOn } from "../hooks/dragingFc";
+import { Box, Card } from "@mui/material";
 
 const ItemCrad: React.FC<ItemsProps | any> = ({
   Name,
@@ -13,41 +12,38 @@ const ItemCrad: React.FC<ItemsProps | any> = ({
   schema = { exist: false },
   setcards,
 }) => {
-  const CradCls = classNames(
-    "grid",
-    "grid-cols-5",
-    "gap-1.5",
-    "bg-white",
-    "rounded",
-    "h-[96px]"
-  );
-  const logoCls = classNames("flex", "items-center", "justify-center");
-  const describeCls = classNames("col-span-4");
   const [auxCard, setauxCard] = useState(schema);
-
   return (
-    <div
+    <Card
       draggable="true"
       onDragStart={(e) => {
-        dragStart(e,setauxCard,border);
+        dragStart(e, setauxCard, border);
       }}
       onDrag={(e) => {
-        dragOn(e,setauxCard,border);
+        dragOn(e, setauxCard, border);
       }}
       onDragEnd={(e) => {
-        dragEnd(e,setauxCard,border,setcards,auxCard);
+        dragEnd(e, setauxCard, border, setcards, auxCard);
       }}
-      className={CradCls}
+      sx={{ display: "flex", height: 100, width: 200 }}
     >
-      <div className={logoCls}>
-        <FontAwesomeIcon icon={Logo} />
-      </div>
-      <div className={describeCls}>
-        <h1>{Name}</h1>
-        <span>{Description}</span>
-      </div>
+      <Box
+        sx={{
+          backgroundColor: "green",
+          margin: "auto 10px",
+          borderRadius: 0.5,
+          padding: 1,
+          color:'#eceff1'
+        }}
+      >
+        {<Logo></Logo>}
+      </Box>
+      <Box>
+        <h4>{Name}</h4>
+        <h6>{Description}</h6>
+      </Box>
       {auxCard.exist ? <Functions {...auxCard} pose="fixed" /> : ""}
-    </div>
+    </Card>
   );
 };
 

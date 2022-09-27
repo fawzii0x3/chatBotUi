@@ -1,20 +1,23 @@
-import classNames from "classnames";
 import React, { useRef } from "react";
+import { Box } from "@mui/material";
 import { dragingExisting } from "../hooks/dragingFc";
 
 const OutPort: React.FC<any> = ({ outTxt, id, connection }) => {
-  const outCls = classNames();
-  console.log(connection);
   return (
-    <div
-      className={outCls}
-      onClick={(e) => {
-        console.log(id);
+    <Box
+      sx={{
+        marginY: 1,
+        paddingY: 0.5,
+        width: "108%",
+        textAlign: "end",
+      }}
+      onClick={()=>{
       }}
     >
-      <h1>{outTxt}</h1>
-      <div className="outBullet"></div>
-    </div>
+      <h4 className="outLine" style={{ display: "inline-block" }}>
+        {outTxt}
+      </h4>
+    </Box>
   );
 };
 
@@ -30,60 +33,65 @@ const Functions: React.FC<any> = ({
   border,
   connection,
 }) => {
-  const outorCls = classNames("border", "border-slate-600", "w-fit", pose);
-  const NameCls = classNames("p-4", "bg-white");
-  const PortCls = classNames("bg-slate-50");
-  const InBullet = classNames("bg-slate-300", "h-[15px]", "w-[15px]");
   const elem = useRef<any>();
-  console.log(elem?.current?.children[1]?.children[0].children);
   return (
-    <div
-      ref={elem}
-      className={outorCls}
-      style={{
-        top: position[1],
-        left: position[0],
-        opacity: opacity,
-        zIndex: 3,
-      }}
-      draggable={true}
-      onDragStart={(e) => {
-        e.dataTransfer.setDragImage(new Image(), 0, 0);
-      }}
-      onDrag={(e) => {
-        dragingExisting(e, id, setcards, border, elem);
-      }}
-    >
-      <div className={NameCls}>
-        <h1>{Message}</h1>
-      </div>
-      <div className={PortCls}>
-        {OutputPort.map((itm: any, idx: number) => {
-          return (
-            <OutPort
-              key={idx}
-              outTxt={itm}
-              id={id + (idx + 1) * 0.1}
-              connection={connection}
-            />
-          );
-        })}
-        {Inport ? (
-          <div
-            className={InBullet}
-            style={{
-              width: "15px",
-              borderRadius: "50%",
-              position: "absolute",
-              left: "-10px",
-              top: "75%",
-            }}
-          ></div>
-        ) : (
-          ""
-        )}
-      </div>
-    </div>
+    <>
+      <Box
+        ref={elem}
+        sx={{
+          width: 190,
+          position: pose,
+          '&::before':{
+            display:Inport?'block':'none'
+          }
+        }}
+        style={{
+          top: position[1],
+          left: position[0],
+          opacity: opacity,
+          zIndex: 3,
+        }}
+        draggable={true}
+        onDragStart={(e) => {
+          e.dataTransfer.setDragImage(new Image(), 0, 0);
+        }}
+        onDrag={(e) => {
+          dragingExisting(e, id, setcards, border, elem);
+        }}
+        onClick={()=>{
+          
+        }}
+        className="function"
+      >
+        <Box
+          sx={{
+            paddingY:0.5,
+            paddingLeft:0.5,
+            width: "100%",
+            backgroundColor: "#e3f2fd",
+          }}
+        >
+          <h4>{Message}</h4>
+        </Box>
+        <Box
+          sx={{
+            backgroundColor: "#e3ffff",
+            paddingY: 0.8,
+          }}
+        >
+          {OutputPort.map((elm: any, idx: number) => {
+            return (
+              <OutPort
+                outTxt={elm}
+                key={idx}
+                id={id + (idx + 1) * 0.1}
+                connection={connection}
+              />
+            );
+          })}
+        </Box>
+      </Box>
+    </>
   );
 };
 
