@@ -296,16 +296,6 @@ const EditTab: React.FC<{
               multiline
               rows={4}
               value={simplyCard.Message}
-              onChange={(e) => {
-                setCards((prev: any) => {
-                  return prev.map((elem: any) => {
-                    if (elem.id === editTab.elemId) {
-                      return { ...elem, Message: e.target.value };
-                    }
-                    return elem;
-                  });
-                });
-              }}
             />
           )}
           {simplyCard.functionality === "option" ? (

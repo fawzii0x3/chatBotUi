@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {  useLayoutEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import NavBar from "./components/NavBar";
@@ -9,7 +9,6 @@ import ItemsCard from "./components/ItemsCard";
 import Canvas from "./components/Canvas";
 import { DefautCards } from "./DefaultData";
 import EditTab from "./components/EditTab";
-import { httpGetContent } from "./hooks/requests";
 function App() {
   const [editTab, setEditTab] = useState({ open: true, elemId: "0" });
   const [itemsTab, setItemsTab] = useState(true);
@@ -18,14 +17,6 @@ function App() {
   const [borderheight, setborderHeight] = useState(0);
   const [borderPosition, setborderPosition] = useState([0, 0]);
   const [Cards, setCards] = useState(DefautCards);
-  useEffect(() => {
-    new Promise((resolve) => {
-      resolve(httpGetContent("items"));
-    })
-      .then((data: any) => {
-        setCards(JSON.parse(data));
-      })
-  }, []);
   useLayoutEffect(() => {
     setborderWidth(border?.current.offsetWidth);
     setborderHeight(border?.current.offsetHeight);
@@ -35,7 +26,7 @@ function App() {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <Grid xs={12}>
-          <NavBar Cards={Cards} />
+          <NavBar  />
         </Grid>
         <Grid container>
           <Grid

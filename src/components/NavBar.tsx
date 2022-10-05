@@ -3,9 +3,8 @@ import { companieName } from "../DefaultData";
 import SaveIcon from "@mui/icons-material/Save";
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import React from "react";
-import { httpSubmitContent } from "../hooks/requests";
 
-const NavBar:React.FC<{Cards:any}> = ({Cards}) => {
+const NavBar = () => {
   return (
     <Box
       sx={{
@@ -28,9 +27,6 @@ const NavBar:React.FC<{Cards:any}> = ({Cards}) => {
             size="medium"
             variant="contained"
             color="primary"
-            onClick={async()=>{
-              await httpSubmitContent(Cards)
-            }}
           >
             Save
           </Button>
