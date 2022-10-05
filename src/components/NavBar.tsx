@@ -1,26 +1,49 @@
-import { Box } from "@mui/material";
+import { Box, Button, ButtonGroup, Typography } from "@mui/material";
+import { companieName } from "../DefaultData";
+import SaveIcon from "@mui/icons-material/Save";
+import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
 import React from "react";
-import "../App.css";
 import { httpSubmitContent } from "../hooks/requests";
 
-type NavProps = {
-  Name: string;
-  CompanyName: string;
-  content?: any;
-};
-
-const NavBar: React.FC<NavProps> = ({ Name, CompanyName, content }) => {
+const NavBar:React.FC<{Cards:any}> = ({Cards}) => {
   return (
-    <Box sx={{display:"flex",backgroundColor:'#fff'}}>
-      <div>
-        <h1>{Name}</h1>
-        <span>By {CompanyName}</span>
-      </div>
-      <div>
-        <button>☀️</button>
-        <button onClick={() => httpSubmitContent(content)}>Save 💾</button>
-        <button>Publish 🚀</button>
-      </div>
+    <Box
+      sx={{
+        backgroundColor: "#121212",
+        height: "10vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-around",
+      }}
+    >
+      <Box>
+        <Typography variant="h6" sx={{ color: "#fff" }}>
+          {companieName}
+        </Typography>
+      </Box>
+      <Box>
+        <ButtonGroup>
+          <Button
+            startIcon={<SaveIcon />}
+            size="medium"
+            variant="contained"
+            color="primary"
+            onClick={async()=>{
+              await httpSubmitContent(Cards)
+            }}
+          >
+            Save
+          </Button>
+          <Button
+            startIcon={<RocketLaunchIcon />}
+            size="medium"
+            variant="contained"
+            color="success"
+          >
+            Publish
+          </Button>
+        </ButtonGroup>
+      </Box>
     </Box>
   );
 };

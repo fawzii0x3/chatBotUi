@@ -1,25 +1,5 @@
-
-#root{
-    max-height: 100vh;
-    overflow: hidden;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-.function::before {
-    content: "";
-    padding: 10px;
-    border-radius: 50%;
-    background-color: black;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: -20px;
-  }
-  .outLine::after {
-    content: "";
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid black;
-    transform: rotateZ(-90deg)
-  }

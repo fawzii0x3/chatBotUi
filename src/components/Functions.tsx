@@ -1,98 +1,162 @@
-import React, { useRef } from "react";
-import { Box } from "@mui/material";
-import { dragingExisting } from "../hooks/dragingFc";
+import { Box, Card, Typography } from "@mui/material";
+import React, { useLayoutEffect, useRef, useState } from "react";
+import { dragingExisting, TouchingExisting } from "../hooks/dragingFc";
 
-const OutPort: React.FC<any> = ({ outTxt, id, connection }) => {
+const OutPut: React.FC<{ children: string }> = ({ children }) => {
   return (
     <Box
       sx={{
-        marginY: 1,
-        paddingY: 0.5,
-        width: "108%",
         textAlign: "end",
-      }}
-      onClick={()=>{
+        position: "relative",
+        userSelect: "none",
       }}
     >
-      <h4 className="outLine" style={{ display: "inline-block" }}>
-        {outTxt}
-      </h4>
+      {children.split(" ").map((itm: string, key: number) => {
+        return (
+          <Typography variant="body2" key={key} sx={{ userSelect: "none" }}>
+            {itm}
+          </Typography>
+        );
+      })}
+      <Box
+        onClickCapture={(e)=>{
+          console.log(e)
+         
+        }}
+        sx={{
+          position: "absolute",
+          top: 3.5,
+          right: -8,
+          display: "inline-block",
+          borderTop: "7px solid transparent",
+          borderBottom: "7px solid transparent",
+          borderLeft: "7px solid blue",
+          "&:hover":{
+            filter:"contrast(175%) brightness(3%)"
+          }
+        }}
+      ></Box>
     </Box>
   );
 };
-
-const Functions: React.FC<any> = ({
-  Inport,
-  OutputPort,
-  Message,
-  pose = "absolute",
+const Functions: React.FC<{
+  position: number[];
+  arr: string[];
+  Name: string;
+  id: string;
+  InPort?: boolean;
+  setEditTab?: any;
+  editTab?: any;
+  setCards?: any;
+  borderPosition?: number[];
+  border?: any;
+  auxMode?: { modeOn: boolean; opacity: number };
+}> = ({
   position,
-  opacity = 1,
+  arr = ["next"],
+  Name,
+  InPort = true,
+  setEditTab,
   id,
-  setcards,
+  editTab,
+  setCards,
+  borderPosition = [0, 0],
   border,
-  connection,
+  auxMode = { modeOn: false, opacity: 0.7 },
 }) => {
-  const elem = useRef<any>();
+  const [elmentWidth, setelmentWidth] = useState(0);
+  const [elmentHeight, setelmentHeight] = useState(0);
+  const element = useRef<any>(null);
+  useLayoutEffect(() => {
+    setelmentHeight(element.current.offsetHeight);
+    setelmentWidth(element.current.offsetWidth);
+  }, []);
   return (
     <>
-      <Box
-        ref={elem}
+      <Card
+        ref={element}
+        variant="outlined"
         sx={{
-          width: 190,
-          position: pose,
-          '&::before':{
-            display:Inport?'block':'none'
-          }
-        }}
-        style={{
+          position: auxMode.modeOn ? "fixed" : "absolute",
           top: position[1],
           left: position[0],
-          opacity: opacity,
-          zIndex: 3,
+          width: 150,
+          height: "auto",
+          overflow: "visible",
+          border: auxMode.modeOn
+            ? "1px solid rgba(0, 0, 0, 0.12)"
+            : editTab.elemId === id
+            ? "#000 dashed 1px"
+            : "1px solid rgba(0, 0, 0, 0.12)",
+          opacity: auxMode.modeOn ? auxMode.opacity : 1,
+          zIndex: auxMode.modeOn ? 4 : editTab.elemId === id ? 3 : 2,
         }}
-        draggable={true}
-        onDragStart={(e) => {
-          e.dataTransfer.setDragImage(new Image(), 0, 0);
-        }}
-        onDrag={(e) => {
-          dragingExisting(e, id, setcards, border, elem);
-        }}
-        onClick={()=>{
-          
-        }}
-        className="function"
       >
         <Box
-          sx={{
-            paddingY:0.5,
-            paddingLeft:0.5,
-            width: "100%",
-            backgroundColor: "#e3f2fd",
+          onTouchMove={(e) => {
+            if (!auxMode.modeOn) {
+              TouchingExisting(
+                e,
+                id,
+                setCards,
+                borderPosition[1],
+                borderPosition[0],
+                elmentWidth,
+                elmentHeight,
+                border
+              );
+            }
+          }}
+          onDragStart={(e) => {
+            if (!auxMode.modeOn) {
+              e.dataTransfer.setDragImage(new Image(), e.screenX, e.screenY);
+            }
+          }}
+          onDragCapture={(e) => {
+            if (!auxMode.modeOn) {
+              dragingExisting(
+                e,
+                id,
+                setCards,
+                borderPosition[1],
+                borderPosition[0],
+                elmentWidth,
+                elmentHeight,
+                border
+              );
+            }
+          }}
+          draggable="true"
+          onClickCapture={() => {
+            if (!auxMode.modeOn) {
+              setEditTab({ open: true, elemId: id });
+            }
           }}
         >
-          <h4>{Message}</h4>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: -8.5,
+              display: InPort ? "block" : "none",
+              width: 10,
+              height: 10,
+              borderRadius: "50%",
+              backgroundColor: "blue",
+            }}
+          ></Box>
+          <Box sx={{ padding: 1, overflow: "hidden" }}>
+            <Typography variant="body1">{Name}</Typography>
+          </Box>
+          <Box sx={{ py: 1.5, backgroundColor: "#f5f5f5", width: "100%" }}>
+            {arr.map((itm, idx) => {
+              return <OutPut key={idx}>{itm}</OutPut>;
+            })}
+          </Box>
         </Box>
-        <Box
-          sx={{
-            backgroundColor: "#e3ffff",
-            paddingY: 0.8,
-          }}
-        >
-          {OutputPort.map((elm: any, idx: number) => {
-            return (
-              <OutPort
-                outTxt={elm}
-                key={idx}
-                id={id + (idx + 1) * 0.1}
-                connection={connection}
-              />
-            );
-          })}
-        </Box>
-      </Box>
+      </Card>
     </>
   );
 };
 
-export default Functions;
+export { Functions, OutPut };

@@ -1,5 +1,3 @@
-import { ItemsProps } from "./gloabal";
-
 import PollIcon from "@mui/icons-material/Poll";
 import MessageIcon from "@mui/icons-material/Message";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -10,41 +8,30 @@ import CodeIcon from "@mui/icons-material/Code";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 
-const defaultOpacity = 0.3;
-const defaultPosition = [0, 0];
-const Items: ItemsProps[] = [
+const Items = [
   {
     Logo: MessageIcon,
     Name: "Send a Message",
     Description: 'Send a message to user e.g "Hi"',
     OutPort: 1,
-    bgColor: "green",
+    bgColor: "#00e676",
     schema: {
-      position: defaultPosition,
       OutputPort: ["next"],
-      Inport: 1,
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "message",
     },
   },
   {
     Logo: MoreHorizIcon,
-    Name: "Ask Question withoptions",
+    Name: "Ask Question with Options",
     Description: "E.g Ask gender",
     OutPort: 2,
-    bgColor: "",
+    bgColor: "#d4e157",
     schema: {
-      position: defaultPosition,
-      OutputPort: ["true", "false"],
-      Inport: 1,
+      OutputPort: ["option1", "option2"],
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "option",
+      varName:"opp"
     },
   },
   {
@@ -52,16 +39,12 @@ const Items: ItemsProps[] = [
     Name: "Ask Question with input",
     Description: "E.g Ask Name",
     OutPort: 1,
-    bgColor: "",
+    bgColor: "#ffca28",
     schema: {
-      position: defaultPosition,
       OutputPort: ["next"],
-      Inport: 1,
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "input",
+      varName:"in"
     },
   },
   {
@@ -69,16 +52,12 @@ const Items: ItemsProps[] = [
     Name: "Conditional Jumps",
     Description: "E.g Address as Mr. if gender is male",
     OutPort: 2,
-    bgColor: "",
+    bgColor: "#ff7043",
     schema: {
-      position: defaultPosition,
-      OutputPort: ["next"],
-      Inport: 1,
+      OutputPort: ["true","false"],
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "condition",
+      varIf:""
     },
   },
   {
@@ -86,16 +65,11 @@ const Items: ItemsProps[] = [
     Name: "Send a Picture",
     Description: "E.g a product photo or simply a GIF",
     OutPort: 1,
-    bgColor: "",
+    bgColor: "#8d6e63",
     schema: {
-      position: defaultPosition,
       OutputPort: ["next"],
-      Inport: 1,
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "sendPic",
     },
   },
   {
@@ -103,16 +77,11 @@ const Items: ItemsProps[] = [
     Name: "Recive Email",
     Description: "Get e-mail of the responses collected.",
     OutPort: 1,
-    bgColor: "",
+    bgColor: "#78909c",
     schema: {
-      position: defaultPosition,
       OutputPort: ["next"],
-      Inport: 1,
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "sendPic"
     },
   },
   {
@@ -120,16 +89,11 @@ const Items: ItemsProps[] = [
     Name: "Script Block",
     Description: "Meant for developers.",
     OutPort: 1,
-    bgColor: "",
+    bgColor: "#76ff03",
     schema: {
-      position: defaultPosition,
       OutputPort: ["next"],
-      Inport: 1,
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "script"
     },
   },
   {
@@ -137,16 +101,11 @@ const Items: ItemsProps[] = [
     Name: "Get API",
     Description: "Get data from an API/URL",
     OutPort: 1,
-    bgColor: "",
+    bgColor: "#1de9b6",
     schema: {
-      position: defaultPosition,
       OutputPort: ["next"],
-      Inport: 1,
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "getApi"
     },
   },
   {
@@ -154,16 +113,11 @@ const Items: ItemsProps[] = [
     Name: "Post API",
     Description: "Post data to an API/URL",
     OutPort: 1,
-    bgColor: "",
+    bgColor: "#26a69a",
     schema: {
-      position: defaultPosition,
       OutputPort: ["next"],
-      Inport: 1,
       connection: [],
-      opacity: defaultOpacity,
-      exist: false,
-      Name: "Message",
-      Message: "hi",
+      functionality: "PostApi"
     },
   },
 ];

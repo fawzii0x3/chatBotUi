@@ -1,142 +1,134 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./App.css";
-import BackGround from "./components/BackGround";
-import ItemList from "./components/ItemList";
-import NavBar from "./components/NavBar";
-import { ItemsProps } from "./gloabal";
-import Items from "./items";
-import ItemCrad from "./components/ItmsCard";
-import Functions from "./components/Functions";
-import { httpGetContent } from "./hooks/requests";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
-import InsertCommentIcon from "@mui/icons-material/InsertComment";
-import ChatBox from "./components/ChatBox";
+import NavBar from "./components/NavBar";
+import { Button, Typography } from "@mui/material";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import ItemsCard from "./components/ItemsCard";
+import Canvas from "./components/Canvas";
+import { DefautCards } from "./DefaultData";
+import EditTab from "./components/EditTab";
+import { httpGetContent } from "./hooks/requests";
 function App() {
-  const border = useRef();
-
-  const [content, setcontent] = useState([
-    {
-      InPort: false,
-      Message: "Hello there 👋",
-      OutputPort: ["next"],
-      position: [10, 10],
-      connection: [1],
-      id: 0,
-    },
-    {
-      Inport: true,
-      Message: "hi",
-      Name: "Message",
-      OutputPort: ["next"],
-      connection: [],
-      exist: true,
-      id: 1,
-      opacity: 1,
-      pose: "absolute",
-      position: [529, 172],
-    },
-  ]);
+  const [editTab, setEditTab] = useState({ open: true, elemId: "0" });
+  const [itemsTab, setItemsTab] = useState(true);
+  const border = useRef<any>();
+  const [borderWidth, setborderWidth] = useState(0);
+  const [borderheight, setborderHeight] = useState(0);
+  const [borderPosition, setborderPosition] = useState([0, 0]);
+  const [Cards, setCards] = useState(DefautCards);
   useEffect(() => {
-    httpGetContent("items")
-      .then((e) => {
-        const wrd = JSON.parse(e ? e : "");
-        if (wrd) {
-          setcontent(wrd);
-        }
+    new Promise((resolve) => {
+      resolve(httpGetContent("items"));
+    })
+      .then((data: any) => {
+        setCards(JSON.parse(data));
       })
-      .catch((err) => {
-        console.error(err);
-      });
   }, []);
-  const [test, setTest] = useState(false);
-  const [chat, setChat] = useState(false);
+  useLayoutEffect(() => {
+    setborderWidth(border?.current.offsetWidth);
+    setborderHeight(border?.current.offsetHeight);
+    setborderPosition([border.current.offsetLeft, border.current.offsetTop]);
+  }, [editTab, itemsTab]);
   return (
-    <BackGround>
+    <>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={1}>
-          <Grid xs={12}>
-            <NavBar
-              Name={"MyBot"}
-              CompanyName={"BotFlow"}
-              content={content}
-            ></NavBar>
-          </Grid>
-          <Grid xs={2.2}>
-            <ItemList border={border}>
-              {Items.map((itm: ItemsProps, idx) => {
-                return (
-                  <ItemCrad
-                    key={idx}
-                    {...itm}
-                    border={border}
-                    setcards={setcontent}
-                  />
-                );
-              })}
-            </ItemList>
-          </Grid>
+        <Grid xs={12}>
+          <NavBar Cards={Cards} />
+        </Grid>
+        <Grid container>
           <Grid
-            onClick={() => {
-              setTest(false);
+            xs={0.5 + +itemsTab * 1.5}
+            sx={{
+              position: "relative",
+              height: "90vh",
+              backgroundColor: "#121212",
+              px: 2 * +itemsTab,
+              overflowY: "auto",
+              overflowX: "hidden",
             }}
-            xs={test ? 7.8 : 9.8}
           >
             <Box
-              sx={{ width: "100%", height: "85vh", overflow: "auto" }}
-              className="MuiTabs-scroller"
+              sx={{ position: "sticky", top: 0, backgroundColor: "#121212" }}
             >
               <Box
-                ref={border}
                 sx={{
-                  width: 2000,
-                  height: 2000,
-                  margin: 0,
-                  position: "relative",
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: itemsTab ? "space-between" : "center",
                 }}
               >
-                {content.map((itm: any, idx: number) => {
-                  return (
-                    <Functions
-                      key={idx}
-                      {...itm}
-                      setcards={setcontent}
-                      border={border}
-                    />
-                  );
-                })}
+                <Typography variant="h6" sx={{ color: "#fff" }}>
+                  {itemsTab ? "Blocks" : ""}
+                </Typography>
+                <Button
+                  onClick={() => {
+                    setItemsTab(!itemsTab);
+                  }}
+                >
+                  {itemsTab ? (
+                    <KeyboardDoubleArrowLeftIcon titleAccess="close" />
+                  ) : (
+                    <KeyboardDoubleArrowRightIcon titleAccess="open" />
+                  )}
+                </Button>
               </Box>
+              <Typography variant="caption" sx={{ color: "#fafafa" }}>
+                {itemsTab ? "Drag a Block to the right :" : ""}
+              </Typography>
+            </Box>
+            <Box sx={{ height: "auto", mt: 2 }}>
+              <ItemsCard
+                itemsTab={itemsTab}
+                border={border}
+                setCards={setCards}
+                cards={Cards}
+              ></ItemsCard>
             </Box>
           </Grid>
-          <Grid xs sx={{ display: test ? "block" : "none" }}>
-            <h2>xs=2</h2>
+          <Grid
+            xs={8 + +!editTab.open * 2 + +!itemsTab * 1.5}
+            onDragOver={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <Box
+              ref={border}
+              sx={{ width: "100%", height: "90vh", overflow: "auto" }}
+            >
+              <Canvas
+                border={border}
+                borderWidth={borderWidth}
+                borderheight={borderheight}
+                Cards={Cards}
+                setEditTab={setEditTab}
+                editTab={editTab}
+                setCards={setCards}
+                borderPosition={borderPosition}
+              />
+            </Box>
+          </Grid>
+          <Grid
+            xs
+            sx={{ display: editTab.open ? "block" : "none", height: "90vh" }}
+          >
+            <Box>
+              {editTab.elemId !== "-1" && editTab.open ? (
+                <EditTab
+                  Cards={Cards}
+                  setCards={setCards}
+                  editTab={editTab}
+                  setEditTab={setEditTab}
+                />
+              ) : (
+                ""
+              )}
+            </Box>
           </Grid>
         </Grid>
       </Box>
-      <Box sx={{ position: "fixed", right: 74, bottom: 74, zIndex: 99 }}>
-        {chat ? <ChatBox /> : ""}
-        <Box
-          onClick={() => {
-            setChat((prev) => {
-              return !prev;
-            });
-          }}
-          sx={{
-            width: "24px",
-            height: "24px",
-            padding: 2,
-            backgroundColor: "#2196f3",
-            borderRadius: "50%",
-            color: "#eee",
-            "&:hover": {
-              filter: "brightness(105%);",
-            },
-          }}
-        >
-          <InsertCommentIcon />
-        </Box>
-      </Box>
-    </BackGround>
+    </>
   );
 }
 

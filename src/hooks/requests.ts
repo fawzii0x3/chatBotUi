@@ -1,8 +1,8 @@
 const httpGetContent = async (key: any) => {
-  return localStorage.getItem(key)
+  return await localStorage.getItem(key)
 };
 const httpSubmitContent = async (val: any) => {
-  localStorage.setItem("items", JSON.stringify(val));
+  await localStorage.setItem("items", JSON.stringify(val));
 };
 
 export { httpGetContent, httpSubmitContent };
